@@ -37,6 +37,27 @@ graph TD
 
 ---
 
+## 🛠️ Intelligence Logic Flow
+The assistant uses a multi-path reasoning engine to ensure data accuracy and prevent hallucinations.
+
+```mermaid
+graph LR
+    A[User Query] --> B{Deterministic Router}
+    
+    B -->|Keywords: Best, Revenue, Compare| C[SQL Engine]
+    B -->|Keywords: Why, Strategy, Policy| D[PDF RAG Engine]
+    
+    C --> E[(SQLite DB)]
+    D --> F[(ChromaDB Vector Store)]
+    
+    E --> G[Data Synthesis]
+    F --> G
+    
+    G --> H[Final Response + Tool Trace]
+```
+
+---
+
 ## 🛡️ Security & Privacy Thinking
 
 The platform was built with strict adherence to security requirements:
