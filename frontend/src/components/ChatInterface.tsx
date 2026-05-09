@@ -45,26 +45,16 @@ export const ChatInterface: React.FC = () => {
       });
       const data = await res.json();
       
-      let chartData = null;
-      if (data.thought_trace.includes("HighestRevenue") || data.thought_trace.includes("movies")) {
-         chartData = [
-            { title: "Stellar Run", revenue: 500000000, category: "Sci-Fi" },
-            { title: "Dark Orbit", revenue: 350000000, category: "Sci-Fi" },
-            { title: "Last Kingdom", revenue: 120000000, category: "Action" },
-            { title: "Neo Seoul", revenue: 95000000, category: "Drama" }
-         ];
-      }
-
       const assistantMsg: Message = {
         id: (Date.now() + 1).toString(),
         role: 'assistant',
         content: data.answer,
         thought: data.thought_trace,
-        data: chartData
+        data: data.data || null
       };
 
       setMessages(prev => [...prev, assistantMsg]);
-      if (chartData) setActiveData(chartData);
+      if (data.data) setActiveData(data.data);
     } catch (err) {
       console.error(err);
     } finally {
@@ -142,7 +132,7 @@ export const ChatInterface: React.FC = () => {
           </div>
           <div className="flex items-center gap-6">
             <div className="flex items-center gap-2 text-[10px] bg-emerald-500/10 text-emerald-400 px-3 py-1 rounded-full font-bold border border-emerald-500/20 shadow-lg shadow-emerald-500/5">
-               <Zap size={12} fill="currentColor" /> LOCAL OLLAMA: PHI-3 ACTIVE
+               <Zap size={12} fill="currentColor" /> LOCAL OLLAMA: QWEN2.5 ACTIVE
             </div>
             <div className="flex items-center gap-2">
                <button className="p-2 rounded-lg bg-white/5 text-white/40 hover:text-white transition-colors"><Search size={18} /></button>
