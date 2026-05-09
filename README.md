@@ -47,15 +47,11 @@ The platform was built with strict adherence to security requirements:
 
 ---
 
-## 🚀 Deployment (Containerized)
+## 🚀 Deployment
 
+### Option A: Docker Compose (Containerized)
 The project is fully containerized using Docker for production-ready deployment.
 
-### Prerequisites
-- Docker & Docker Compose
-- Ollama (installed locally on host)
-
-### Quick Start
 1. **Pull the Model**:
    ```bash
    ollama pull qwen2.5:0.5b
@@ -67,6 +63,26 @@ The project is fully containerized using Docker for production-ready deployment.
 3. **Access**:
    - Frontend: `http://localhost:80`
    - Backend API: `http://localhost:8000`
+
+### Option B: Manual Setup (Local Development)
+If you prefer to run the components directly on your machine:
+
+1. **Backend Setup**:
+   ```bash
+   # Install dependencies
+   pip install -r requirements.txt
+   # (Optional) Initialize data
+   python scripts/ingest.py
+   # Start server
+   python run_backend.py
+   ```
+2. **Frontend Setup**:
+   ```bash
+   cd frontend
+   npm install
+   npm run dev
+   ```
+3. **Access Dashboard**: Open `http://localhost:5173`
 
 ---
 

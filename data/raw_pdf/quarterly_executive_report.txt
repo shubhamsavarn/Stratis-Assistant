@@ -1,3 +1,5 @@
 QUARTERLY EXECUTIVE SUMMARY - Q1 2025
 
 Performance Overview: Our top title, Iron Horizon, has exceeded all projections with 500M in revenue. We are seeing strong growth in the London and Tokyo markets. The strategy to pivot towards high-budget Sci-Fi has been validated by the data in movies.csv.
+
+DEFINITION: Legacy Projects refer to our deep back-catalog of heritage titles acquired during the 2020 international merger. These titles (ID 21-100) are managed by our secondary distribution wing and provide consistent long-tail revenue across regional markets.
