@@ -11,6 +11,13 @@ The system follows a modern decoupled architecture optimized for **security**, *
 - **Backend**: A FastAPI server that implements a "Security First" gateway, restricting raw data access through specialized AI tools.
 - **AI Intelligence**: Powered by **Ollama (Qwen2.5:0.5b)**. Running the model locally ensures that sensitive internal data never leaves the organizational perimeter.
 
+---
+
+## 🎬 Project Demo
+[**Watch the InsightFlow AI Platform in Action**](https://drive.google.com/file/d/1dsg8xH8niq3nkvHj0cdtYrpPxENd4GWi/view?usp=sharing)
+
+---
+
 ```mermaid
 graph TD
     User((User)) -->|Secure Header| Frontend[React Dashboard]
