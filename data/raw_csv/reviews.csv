@@ -1,0 +1,301 @@
+review_id,movie_id,rating,comment
+1,45,3,Great movie 0
+2,79,1,Could be better 1
+3,99,4,Great movie 2
+4,89,7,Could be better 3
+5,69,5,Great movie 4
+6,84,8,Could be better 5
+7,93,9,Great movie 6
+8,21,10,Could be better 7
+9,65,7,Great movie 8
+10,63,7,Could be better 9
+11,36,8,Great movie 10
+12,2,6,Could be better 11
+13,15,2,Great movie 12
+14,37,6,Could be better 13
+15,67,8,Great movie 14
+16,3,1,Could be better 15
+17,94,7,Great movie 16
+18,24,2,Could be better 17
+19,8,10,Great movie 18
+20,48,4,Could be better 19
+21,21,10,Great movie 20
+22,51,7,Could be better 21
+23,96,8,Great movie 22
+24,17,6,Could be better 23
+25,1,6,Great movie 24
+26,52,9,Could be better 25
+27,7,4,Great movie 26
+28,97,1,Could be better 27
+29,14,4,Great movie 28
+30,90,5,Could be better 29
+31,58,10,Great movie 30
+32,60,9,Could be better 31
+33,73,7,Great movie 32
+34,99,4,Could be better 33
+35,45,6,Great movie 34
+36,31,3,Could be better 35
+37,82,1,Great movie 36
+38,1,3,Could be better 37
+39,13,10,Great movie 38
+40,65,7,Could be better 39
+41,52,4,Great movie 40
+42,45,2,Could be better 41
+43,51,2,Great movie 42
+44,83,10,Could be better 43
+45,57,10,Great movie 44
+46,9,1,Could be better 45
+47,97,9,Great movie 46
+48,34,4,Could be better 47
+49,14,4,Great movie 48
+50,14,8,Could be better 49
+51,77,8,Great movie 50
+52,60,10,Could be better 51
+53,63,1,Great movie 52
+54,22,2,Could be better 53
+55,13,2,Great movie 54
+56,61,2,Could be better 55
+57,92,3,Great movie 56
+58,38,4,Could be better 57
+59,78,4,Great movie 58
+60,59,6,Could be better 59
+61,16,4,Great movie 60
+62,84,3,Could be better 61
+63,86,2,Great movie 62
+64,41,8,Could be better 63
+65,14,1,Great movie 64
+66,56,6,Could be better 65
+67,46,1,Great movie 66
+68,50,4,Could be better 67
+69,39,2,Great movie 68
+70,78,4,Could be better 69
+71,54,9,Great movie 70
+72,99,1,Could be better 71
+73,25,6,Great movie 72
+74,45,1,Could be better 73
+75,13,7,Great movie 74
+76,88,9,Could be better 75
+77,54,1,Great movie 76
+78,91,2,Could be better 77
+79,41,3,Great movie 78
+80,1,1,Could be better 79
+81,4,8,Great movie 80
+82,87,10,Could be better 81
+83,22,1,Great movie 82
+84,68,5,Could be better 83
+85,21,2,Great movie 84
+86,68,10,Could be better 85
+87,1,4,Great movie 86
+88,33,9,Could be better 87
+89,62,5,Great movie 88
+90,93,4,Could be better 89
+91,69,4,Great movie 90
+92,9,3,Could be better 91
+93,53,8,Great movie 92
+94,61,7,Could be better 93
+95,87,9,Great movie 94
+96,2,7,Could be better 95
+97,8,2,Great movie 96
+98,97,6,Could be better 97
+99,34,9,Great movie 98
+100,86,7,Could be better 99
+101,99,3,Great movie 100
+102,59,8,Could be better 101
+103,79,6,Great movie 102
+104,64,4,Could be better 103
+105,30,9,Great movie 104
+106,42,4,Could be better 105
+107,66,7,Great movie 106
+108,34,4,Could be better 107
+109,62,7,Great movie 108
+110,46,8,Could be better 109
+111,87,10,Great movie 110
+112,15,10,Could be better 111
+113,57,5,Great movie 112
+114,83,8,Could be better 113
+115,67,4,Great movie 114
+116,80,7,Could be better 115
+117,66,3,Great movie 116
+118,19,5,Could be better 117
+119,34,1,Great movie 118
+120,32,5,Could be better 119
+121,80,10,Great movie 120
+122,99,4,Could be better 121
+123,2,4,Great movie 122
+124,83,2,Could be better 123
+125,7,2,Great movie 124
+126,43,2,Could be better 125
+127,15,7,Great movie 126
+128,51,3,Could be better 127
+129,49,4,Great movie 128
+130,78,5,Could be better 129
+131,50,6,Great movie 130
+132,33,4,Could be better 131
+133,70,1,Great movie 132
+134,80,1,Could be better 133
+135,38,6,Great movie 134
+136,14,6,Could be better 135
+137,47,3,Great movie 136
+138,94,10,Could be better 137
+139,2,3,Great movie 138
+140,20,1,Could be better 139
+141,16,2,Great movie 140
+142,64,5,Could be better 141
+143,23,6,Great movie 142
+144,84,9,Could be better 143
+145,72,6,Great movie 144
+146,93,3,Could be better 145
+147,100,7,Great movie 146
+148,99,6,Could be better 147
+149,94,10,Great movie 148
+150,98,1,Could be better 149
+151,88,10,Great movie 150
+152,91,2,Could be better 151
+153,29,5,Great movie 152
+154,14,1,Could be better 153
+155,48,5,Great movie 154
+156,98,6,Could be better 155
+157,64,7,Great movie 156
+158,31,1,Could be better 157
+159,56,5,Great movie 158
+160,80,1,Could be better 159
+161,42,3,Great movie 160
+162,74,6,Could be better 161
+163,37,9,Great movie 162
+164,13,2,Could be better 163
+165,9,10,Great movie 164
+166,33,7,Could be better 165
+167,73,8,Great movie 166
+168,28,6,Could be better 167
+169,3,6,Great movie 168
+170,87,3,Could be better 169
+171,7,10,Great movie 170
+172,36,4,Could be better 171
+173,30,10,Great movie 172
+174,49,9,Could be better 173
+175,98,9,Great movie 174
+176,42,6,Could be better 175
+177,56,2,Great movie 176
+178,38,7,Could be better 177
+179,51,8,Great movie 178
+180,16,7,Could be better 179
+181,100,6,Great movie 180
+182,49,6,Could be better 181
+183,52,2,Great movie 182
+184,16,6,Could be better 183
+185,30,7,Great movie 184
+186,14,2,Could be better 185
+187,60,1,Great movie 186
+188,44,3,Could be better 187
+189,100,3,Great movie 188
+190,99,7,Could be better 189
+191,19,2,Great movie 190
+192,10,2,Could be better 191
+193,29,2,Great movie 192
+194,70,2,Could be better 193
+195,5,3,Great movie 194
+196,70,9,Could be better 195
+197,69,3,Great movie 196
+198,57,3,Could be better 197
+199,89,2,Great movie 198
+200,51,1,Could be better 199
+201,53,2,Great movie 200
+202,4,2,Could be better 201
+203,52,1,Great movie 202
+204,78,9,Could be better 203
+205,99,1,Great movie 204
+206,14,5,Could be better 205
+207,66,10,Great movie 206
+208,57,7,Could be better 207
+209,75,1,Great movie 208
+210,22,8,Could be better 209
+211,74,6,Great movie 210
+212,95,5,Could be better 211
+213,82,5,Great movie 212
+214,2,3,Could be better 213
+215,79,9,Great movie 214
+216,35,10,Could be better 215
+217,94,10,Great movie 216
+218,89,8,Could be better 217
+219,66,9,Great movie 218
+220,84,3,Could be better 219
+221,40,1,Great movie 220
+222,10,9,Could be better 221
+223,72,7,Great movie 222
+224,46,1,Could be better 223
+225,40,6,Great movie 224
+226,38,4,Could be better 225
+227,48,10,Great movie 226
+228,18,10,Could be better 227
+229,72,3,Great movie 228
+230,22,9,Could be better 229
+231,18,7,Great movie 230
+232,35,6,Could be better 231
+233,34,9,Great movie 232
+234,86,3,Could be better 233
+235,77,5,Great movie 234
+236,41,6,Could be better 235
+237,52,10,Great movie 236
+238,38,6,Could be better 237
+239,50,2,Great movie 238
+240,33,9,Could be better 239
+241,68,4,Great movie 240
+242,46,4,Could be better 241
+243,82,3,Great movie 242
+244,67,7,Could be better 243
+245,43,2,Great movie 244
+246,72,2,Could be better 245
+247,51,1,Great movie 246
+248,53,7,Could be better 247
+249,85,6,Great movie 248
+250,9,10,Could be better 249
+251,58,4,Great movie 250
+252,95,8,Could be better 251
+253,59,7,Great movie 252
+254,93,8,Could be better 253
+255,42,4,Great movie 254
+256,69,3,Could be better 255
+257,90,6,Great movie 256
+258,69,10,Could be better 257
+259,34,10,Great movie 258
+260,5,8,Could be better 259
+261,22,2,Great movie 260
+262,62,8,Could be better 261
+263,37,8,Great movie 262
+264,84,4,Could be better 263
+265,26,7,Great movie 264
+266,35,7,Could be better 265
+267,83,1,Great movie 266
+268,93,9,Could be better 267
+269,6,1,Great movie 268
+270,100,5,Could be better 269
+271,60,5,Great movie 270
+272,3,8,Could be better 271
+273,85,3,Great movie 272
+274,3,3,Could be better 273
+275,100,2,Great movie 274
+276,93,3,Could be better 275
+277,71,6,Great movie 276
+278,87,10,Could be better 277
+279,82,3,Great movie 278
+280,91,10,Could be better 279
+281,95,4,Great movie 280
+282,82,9,Could be better 281
+283,88,2,Great movie 282
+284,36,7,Could be better 283
+285,94,4,Great movie 284
+286,99,9,Could be better 285
+287,28,6,Great movie 286
+288,55,3,Could be better 287
+289,33,3,Great movie 288
+290,62,4,Could be better 289
+291,36,6,Great movie 290
+292,71,7,Could be better 291
+293,92,2,Great movie 292
+294,44,7,Could be better 293
+295,34,10,Great movie 294
+296,11,10,Could be better 295
+297,38,4,Great movie 296
+298,3,5,Could be better 297
+299,65,10,Great movie 298
+300,100,8,Could be better 299
