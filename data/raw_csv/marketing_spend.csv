@@ -1,51 +1,51 @@
-campaign_id,movie_id,spend,channel
-1,6,533956,Social Media
-2,4,80231,Social Media
-3,84,734334,Billboard
-4,68,469802,Social Media
-5,92,780591,TV
-6,91,620373,Social Media
-7,70,775588,TV
-8,25,208312,Billboard
-9,48,510563,TV
-10,6,325328,Billboard
-11,57,521463,Social Media
-12,66,243642,Billboard
-13,44,139170,Billboard
-14,47,344725,Email
-15,91,66157,Billboard
-16,99,338299,Social Media
-17,4,248437,Email
-18,93,440428,Email
-19,60,792068,Social Media
-20,43,325368,Social Media
-21,43,383322,Social Media
-22,88,838125,Email
-23,86,244438,TV
-24,14,564922,Email
-25,95,834094,TV
-26,87,702950,Billboard
-27,28,884228,Social Media
-28,68,148779,TV
-29,24,952576,Billboard
-30,61,287227,Billboard
-31,67,540826,Email
-32,82,490752,Social Media
-33,19,636497,Social Media
-34,21,589688,Social Media
-35,4,731704,Billboard
-36,1,217776,Email
-37,64,388572,TV
-38,90,839049,TV
-39,93,652438,Social Media
-40,48,624317,Email
-41,33,451750,Billboard
-42,98,589824,Email
-43,64,665169,Social Media
-44,17,768009,TV
-45,45,734002,Billboard
-46,40,612541,Billboard
-47,97,194890,Social Media
-48,96,471895,TV
-49,28,913069,Billboard
-50,18,575895,Social Media
+campaign_id,movie_id,spend,channel,campaign_name
+1,6,328044,Social Media,Holiday Special Promo
+2,4,801255,Social Media,Summer Blockbuster Blitz
+3,84,636823,Billboard,Direct Email Fanbase
+4,68,835927,Social Media,Midnight Madness Launch
+5,92,977025,TV,Global Premier Push
+6,91,651135,Social Media,Teaser Trailer Hype
+7,70,969200,TV,Social Media Takeover
+8,25,956810,Billboard,Influencer Outreach
+9,48,232343,TV,Fan Choice Awards
+10,6,653652,Billboard,Holiday Special Promo
+11,57,809383,Social Media,Midnight Madness Launch
+12,66,175632,Billboard,Teaser Trailer Hype
+13,44,140926,Billboard,Holiday Special Promo
+14,47,54926,Email,Holiday Special Promo
+15,91,264698,Billboard,Holiday Special Promo
+16,99,568154,Social Media,Fan Choice Awards
+17,4,541965,Email,Influencer Outreach
+18,93,137356,Email,Influencer Outreach
+19,60,399953,Social Media,Midnight Madness Launch
+20,43,877683,Social Media,Fan Choice Awards
+21,43,79118,Social Media,Mainstreet Billboard Blitz
+22,88,568314,Email,Midnight Madness Launch
+23,86,514003,TV,Holiday Special Promo
+24,14,376818,Email,Direct Email Fanbase
+25,95,74226,TV,Influencer Outreach
+26,87,615576,Billboard,Mainstreet Billboard Blitz
+27,28,114312,Social Media,Direct Email Fanbase
+28,68,924475,TV,Midnight Madness Launch
+29,24,203490,Billboard,Social Media Takeover
+30,61,802671,Billboard,Influencer Outreach
+31,67,901992,Email,Teaser Trailer Hype
+32,82,53620,Social Media,Influencer Outreach
+33,19,615927,Social Media,Summer Blockbuster Blitz
+34,21,566382,Social Media,Summer Blockbuster Blitz
+35,4,408082,Billboard,Influencer Outreach
+36,1,175424,Email,Influencer Outreach
+37,64,990720,TV,Global Premier Push
+38,90,878033,TV,Teaser Trailer Hype
+39,93,72974,Social Media,Holiday Special Promo
+40,48,477893,Email,Holiday Special Promo
+41,33,250789,Billboard,Direct Email Fanbase
+42,98,914552,Email,Fan Choice Awards
+43,64,635585,Social Media,Mainstreet Billboard Blitz
+44,17,727519,TV,Holiday Special Promo
+45,45,233793,Billboard,Social Media Takeover
+46,40,308993,Billboard,Teaser Trailer Hype
+47,97,257705,Social Media,Global Premier Push
+48,96,938377,TV,Influencer Outreach
+49,28,575761,Billboard,Social Media Takeover
+50,18,801045,Social Media,Summer Blockbuster Blitz

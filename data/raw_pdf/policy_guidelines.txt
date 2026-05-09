@@ -1,0 +1,3 @@
+AI ACCESS & DATA PRIVACY POLICY
+
+Guidelines: This AI assistant is restricted to internal business data only. Sensitive viewer names in viewers.csv must be handled securely. Tool-based access is mandatory for all SQL queries to maintain data integrity.

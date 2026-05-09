@@ -1,0 +1,3 @@
+QUARTERLY EXECUTIVE SUMMARY - Q1 2025
+
+Performance Overview: Our top title, Iron Horizon, has exceeded all projections with 500M in revenue. We are seeing strong growth in the London and Tokyo markets. The strategy to pivot towards high-budget Sci-Fi has been validated by the data in movies.csv.

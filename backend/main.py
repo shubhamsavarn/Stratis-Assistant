@@ -45,8 +45,9 @@ class ChatRequest(BaseModel):
 
 class ChatResponse(BaseModel):
     answer: str
-    thought_trace: str = ""
     data: Optional[List] = None
+    type: str = "text"
+    thought_trace: str = ""
 
 @app.get("/health")
 async def health():
@@ -58,16 +59,16 @@ async def chat(request: ChatRequest, api_key: str = Depends(verify_api_key)):
         logger.info(f"Processing query: {request.query}")
         executor = get_agent_executor()
         result = executor.invoke(request.query)
-        logger.info(f"Query successful. Action: {result.get('thought')}")
         return ChatResponse(
-            answer=result["output"],
-            thought_trace=str(result.get("thought", "")),
-            data=result.get("data")
+            answer=result["answer"],
+            data=result.get("data"),
+            type=result.get("type", "text"),
+            thought_trace=result.get("thought", "")
         )
     except Exception as e:
-        logger.error(f"Error in /chat: {str(e)}")
+        logger.error(f"Error in /chat: {e}")
         logger.error(traceback.format_exc())
-        raise HTTPException(status_code=500, detail="Internal Server Error")
+        raise HTTPException(status_code=500, detail=str(e))
 
 if __name__ == "__main__":
     uvicorn.run(app, host="0.0.0.0", port=8000)

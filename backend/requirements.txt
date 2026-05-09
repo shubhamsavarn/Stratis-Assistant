@@ -1,9 +1,11 @@
-fastapi
+langchain-ollama
+langchain-community
+langchain-huggingface
+sentence-transformers
+chromadb
 uvicorn
+fastapi
 pydantic
 sqlalchemy
-pandas
-chromadb
-langchain-ollama
 pypdf
-sentence-transformers
+pandas

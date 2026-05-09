@@ -33,7 +33,7 @@ export const InsightsDashboard: React.FC<DashboardProps> = ({ data, type = 'bar'
                    keys[0];
   
   // Find a numeric key
-  const valueKey = keys.find(k => k.toLowerCase() === 'value' || k.toLowerCase() === 'revenue' || k.toLowerCase() === 'spend' || k.toLowerCase() === 'total') || 
+  const valueKey = keys.find(k => k.toLowerCase() === 'value' || k.toLowerCase() === 'revenue' || k.toLowerCase() === 'spend' || k.toLowerCase() === 'total' || k.toLowerCase() === 'engagement' || k.toLowerCase() === 'active_users') || 
                    keys.find(k => typeof sample[k] === 'number') || 
                    keys[1];
 

@@ -1,0 +1,76 @@
+2026-05-09 15:39:07,678 - InsightFlow - INFO - Processing query: 2. Why is Stellar Run trending recently? 
+2026-05-09 15:39:09,247 - InsightFlow.Agent - INFO - Agent Processing -> 2. Why is Stellar Run trending recently? 
+2026-05-09 15:39:11,020 - httpx - INFO - HTTP Request: POST http://127.0.0.1:11434/api/chat "HTTP/1.1 200 OK"
+2026-05-09 15:39:13,366 - httpx - INFO - HTTP Request: POST http://127.0.0.1:11434/api/chat "HTTP/1.1 200 OK"
+2026-05-09 15:39:17,538 - InsightFlow - INFO - Query successful. Action: SQL Executed: SELECT title, revenue FROM movies WHERE release_year = 2025 AND title LIKE 'Stellar%' ORDER BY revenue DESC LIMIT 1
+2026-05-09 15:40:22,516 - InsightFlow - INFO - Processing query: Compare Dark Orbit vs Last Kingdom.
+2026-05-09 15:40:24,225 - InsightFlow.Agent - INFO - Agent Processing -> Compare Dark Orbit vs Last Kingdom.
+2026-05-09 15:40:25,402 - httpx - INFO - HTTP Request: POST http://127.0.0.1:11434/api/chat "HTTP/1.1 200 OK"
+2026-05-09 15:40:28,912 - httpx - INFO - HTTP Request: POST http://127.0.0.1:11434/api/chat "HTTP/1.1 200 OK"
+2026-05-09 15:40:31,036 - InsightFlow - INFO - Query successful. Action: SQL Executed: SELECT t1.title, SUM(t2.rating) AS total_ratings FROM movies AS t1 JOIN reviews AS t2 ON t1.movie_id = t2.movie_id WHERE t1.genre = 'Dark Orbit' GROUP BY t1.movie_id ORDER BY total_ratings DESC LIMIT 5
+2026-05-09 15:40:47,081 - InsightFlow - INFO - Processing query: What recommendations would you give for leadership?
+2026-05-09 15:40:48,736 - InsightFlow.Agent - INFO - Agent Processing -> What recommendations would you give for leadership?
+2026-05-09 15:40:49,856 - httpx - INFO - HTTP Request: POST http://127.0.0.1:11434/api/chat "HTTP/1.1 200 OK"
+2026-05-09 15:40:53,660 - httpx - INFO - HTTP Request: POST http://127.0.0.1:11434/api/chat "HTTP/1.1 200 OK"
+2026-05-09 15:41:11,481 - InsightFlow - INFO - Query successful. Action: SQL Executed: SELECT m.title, SUM(wd.duration_minutes) AS total_duration FROM movies m JOIN watch_activity wd ON m.movie_id = wd.movie_id GROUP BY m.movie_id ORDER BY total_duration DESC LIMIT 5
+2026-05-09 15:43:58,662 - InsightFlow - INFO - Processing query: Which titles performed best in 2025? 
+2026-05-09 15:44:00,303 - InsightFlow.Agent - INFO - Agent Processing -> Which titles performed best in 2025? 
+2026-05-09 15:44:01,431 - httpx - INFO - HTTP Request: POST http://127.0.0.1:11434/api/chat "HTTP/1.1 200 OK"
+2026-05-09 15:44:03,782 - httpx - INFO - HTTP Request: POST http://127.0.0.1:11434/api/chat "HTTP/1.1 200 OK"
+2026-05-09 15:44:13,349 - InsightFlow - INFO - Query successful. Action: SQL Executed: SELECT title, revenue FROM movies WHERE release_year = 2025 ORDER BY revenue DESC LIMIT 10
+2026-05-09 15:44:54,179 - InsightFlow - INFO - Processing query: 2. Why is Stellar Run trending recently? 
+2026-05-09 15:44:55,785 - InsightFlow.Agent - INFO - Agent Processing -> 2. Why is Stellar Run trending recently? 
+2026-05-09 15:44:56,952 - httpx - INFO - HTTP Request: POST http://127.0.0.1:11434/api/chat "HTTP/1.1 200 OK"
+2026-05-09 15:44:59,657 - httpx - INFO - HTTP Request: POST http://127.0.0.1:11434/api/chat "HTTP/1.1 200 OK"
+2026-05-09 15:45:05,653 - InsightFlow - INFO - Query successful. Action: SQL Executed: SELECT title, revenue FROM movies WHERE release_year = 2025 AND title LIKE 'Stellar%' ORDER BY revenue DESC LIMIT 1
+2026-05-09 15:46:00,762 - InsightFlow - INFO - Processing query: Compare Dark Orbit vs Last Kingdom.
+2026-05-09 15:46:02,324 - InsightFlow.Agent - INFO - Agent Processing -> Compare Dark Orbit vs Last Kingdom.
+2026-05-09 15:46:03,628 - httpx - INFO - HTTP Request: POST http://127.0.0.1:11434/api/chat "HTTP/1.1 200 OK"
+2026-05-09 15:46:06,695 - httpx - INFO - HTTP Request: POST http://127.0.0.1:11434/api/chat "HTTP/1.1 200 OK"
+2026-05-09 15:46:09,011 - InsightFlow - INFO - Query successful. Action: SQL Executed: SELECT t1.title, SUM(t2.rating) AS total_ratings FROM movies AS t1 JOIN reviews AS t2 ON t1.movie_id = t2.movie_id WHERE t1.genre = 'Dark Orbit' GROUP BY t1.movie_id ORDER BY total_ratings DESC LIMIT 5
+2026-05-09 15:46:39,876 - InsightFlow - INFO - Processing query: 4. Which city had the strongest engagement last month? 
+2026-05-09 15:46:42,107 - InsightFlow.Agent - INFO - Agent Processing -> 4. Which city had the strongest engagement last month? 
+2026-05-09 15:46:43,256 - httpx - INFO - HTTP Request: POST http://127.0.0.1:11434/api/chat "HTTP/1.1 200 OK"
+2026-05-09 15:46:45,950 - httpx - INFO - HTTP Request: POST http://127.0.0.1:11434/api/chat "HTTP/1.1 200 OK"
+2026-05-09 15:46:51,000 - InsightFlow - INFO - Query successful. Action: SQL Executed: SELECT region_name, COUNT(DISTINCT viewer_id) AS active_users FROM watch_activity WHERE activity_date >= DATE_SUB(CURDATE(), INTERVAL 1 MONTH) GROUP BY region_name ORDER BY active_users DESC LIMIT 1
+2026-05-09 15:50:28,081 - InsightFlow - INFO - Processing query: 4. Which city had the strongest engagement last month? 
+2026-05-09 15:50:29,263 - InsightFlow.Agent - INFO - Agent Processing -> 4. Which city had the strongest engagement last month? 
+2026-05-09 15:50:31,042 - httpx - INFO - HTTP Request: POST http://127.0.0.1:11434/api/chat "HTTP/1.1 200 OK"
+2026-05-09 15:50:33,778 - httpx - INFO - HTTP Request: POST http://127.0.0.1:11434/api/chat "HTTP/1.1 200 OK"
+2026-05-09 15:50:34,824 - InsightFlow - INFO - Query successful. Action: SQL Executed: SELECT v.country, SUM(w.duration_minutes) as engagement FROM watch_activity w JOIN viewers v ON w.viewer_id = v.viewer_id WHERE w.watch_date >= date('now', '-30 days') GROUP BY v.country ORDER BY engagement DESC LIMIT 1
+2026-05-09 15:52:14,621 - InsightFlow - INFO - Processing query: 4. Which city had the strongest engagement last month? 
+2026-05-09 15:52:15,681 - InsightFlow.Agent - INFO - Agent Processing -> 4. Which city had the strongest engagement last month? 
+2026-05-09 15:52:17,189 - httpx - INFO - HTTP Request: POST http://127.0.0.1:11434/api/chat "HTTP/1.1 200 OK"
+2026-05-09 15:52:19,687 - httpx - INFO - HTTP Request: POST http://127.0.0.1:11434/api/chat "HTTP/1.1 200 OK"
+2026-05-09 15:52:20,715 - InsightFlow - INFO - Query successful. Action: SQL Executed: SELECT v.country, SUM(w.duration_minutes) as engagement FROM watch_activity w JOIN viewers v ON w.viewer_id = v.viewer_id WHERE w.watch_date >= date('now', '-30 days') GROUP BY v.country ORDER BY engagement DESC LIMIT 1
+2026-05-09 15:54:15,571 - InsightFlow - INFO - Processing query: Which city had the strongest engagement last month?
+2026-05-09 15:54:16,647 - InsightFlow.Agent - INFO - Agent Processing -> Which city had the strongest engagement last month?
+2026-05-09 15:54:18,000 - httpx - INFO - HTTP Request: POST http://127.0.0.1:11434/api/chat "HTTP/1.1 200 OK"
+2026-05-09 15:54:20,658 - httpx - INFO - HTTP Request: POST http://127.0.0.1:11434/api/chat "HTTP/1.1 200 OK"
+2026-05-09 15:54:22,025 - InsightFlow - INFO - Query successful. Action: SQL Executed: SELECT v.country, SUM(w.duration_minutes) as engagement FROM watch_activity w JOIN viewers v ON w.viewer_id = v.viewer_id WHERE w.watch_date >= date('now', '-30 days') GROUP BY v.country ORDER BY engagement DESC LIMIT 1
+2026-05-09 16:06:03,435 - InsightFlow - INFO - Processing query: Which city had the strongest engagement last month?
+2026-05-09 16:06:05,452 - InsightFlow.Agent - INFO - Agent Processing -> Which city had the strongest engagement last month?
+2026-05-09 16:06:22,926 - httpx - INFO - HTTP Request: POST http://127.0.0.1:11434/api/chat "HTTP/1.1 200 OK"
+2026-05-09 16:08:44,650 - httpx - INFO - HTTP Request: POST http://127.0.0.1:11434/api/chat "HTTP/1.1 200 OK"
+2026-05-09 16:08:56,490 - InsightFlow - INFO - Query successful. Action: SQL Executed: SELECT viewer_id, COUNT(*) AS total_engagement FROM watch_activity WHERE watch_date LIKE '2024-02%' GROUP BY viewer_id
+2026-05-09 16:14:00,300 - InsightFlow - INFO - Processing query: 3. Compare Dark Orbit vs Last Kingdom. 
+2026-05-09 16:14:01,277 - InsightFlow.Agent - INFO - Agent Processing -> 3. Compare Dark Orbit vs Last Kingdom. 
+2026-05-09 16:14:02,333 - httpx - INFO - HTTP Request: POST http://127.0.0.1:11434/api/chat "HTTP/1.1 200 OK"
+2026-05-09 16:14:06,087 - httpx - INFO - HTTP Request: POST http://127.0.0.1:11434/api/chat "HTTP/1.1 200 OK"
+2026-05-09 16:14:43,351 - InsightFlow - INFO - Query successful. Action: SQL Executed: SELECT m.title AS movie_title, COUNT(*) as engagement FROM movies m JOIN watch_activity w ON m.movie_id = w.movie_id WHERE w.watch_date LIKE '2024-01%' GROUP BY m.movie_id ORDER BY engagement DESC LIMIT 5
+2026-05-09 16:17:26,403 - InsightFlow - INFO - Processing query: Compare Dark Orbit vs Last Kingdom.
+2026-05-09 16:17:27,497 - InsightFlow.Agent - INFO - Agent Processing -> Compare Dark Orbit vs Last Kingdom.
+2026-05-09 16:17:28,535 - httpx - INFO - HTTP Request: POST http://127.0.0.1:11434/api/chat "HTTP/1.1 200 OK"
+2026-05-09 16:17:31,868 - httpx - INFO - HTTP Request: POST http://127.0.0.1:11434/api/chat "HTTP/1.1 200 OK"
+2026-05-09 16:17:37,931 - InsightFlow - INFO - Query successful. Action: SQL Executed: SELECT m.title, COUNT(*) as engagement FROM movies m JOIN watch_activity w ON m.movie_id = w.movie_id WHERE w.watch_date LIKE '2024-01%' GROUP BY m.movie_id ORDER BY engagement DESC LIMIT 5
+2026-05-09 16:24:58,767 - InsightFlow - INFO - Processing query: Which titles performed best in 2025?
+2026-05-09 16:24:59,740 - InsightFlow.Agent - INFO - Agent Processing -> Which titles performed best in 2025?
+2026-05-09 16:25:11,597 - httpx - INFO - HTTP Request: POST http://127.0.0.1:11434/api/chat "HTTP/1.1 200 OK"
+2026-05-09 16:25:13,228 - InsightFlow.Agent - INFO - Corrected Query for 2024: SELECT title FROM movies WHERE release_year = 2024 GROUP BY title ORDER BY COUNT(*) DESC LIMIT 10
+2026-05-09 16:25:13,689 - httpx - INFO - HTTP Request: POST http://127.0.0.1:11434/api/chat "HTTP/1.1 200 OK"
+2026-05-09 16:25:44,502 - InsightFlow - INFO - Query successful. Action: SQL Executed: SELECT title FROM movies WHERE release_year = 2025 GROUP BY title ORDER BY COUNT(*) DESC LIMIT 10
+2026-05-09 16:28:27,670 - InsightFlow - INFO - Processing query: 2. Why is Stellar Run trending recently? 
+2026-05-09 16:28:28,673 - InsightFlow.Agent - INFO - Agent Processing -> 2. Why is Stellar Run trending recently? 
+2026-05-09 16:28:29,767 - httpx - INFO - HTTP Request: POST http://127.0.0.1:11434/api/chat "HTTP/1.1 200 OK"
+2026-05-09 16:28:32,250 - httpx - INFO - HTTP Request: POST http://127.0.0.1:11434/api/chat "HTTP/1.1 200 OK"
+2026-05-09 16:28:42,235 - InsightFlow - INFO - Query successful. Action: SQL Executed: SELECT t1.title, COUNT(*) as engagement FROM movies m JOIN viewers v ON m.release_year = v.release_year AND m.movie_id = v.movie_id WHERE m.title LIKE 'Stellar Run%' GROUP BY m.movie_id ORDER BY engagement DESC LIMIT 5

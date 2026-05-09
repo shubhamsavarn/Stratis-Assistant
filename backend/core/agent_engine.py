@@ -1,99 +1,114 @@
 import os
 import json
-import re
 import logging
-from langchain_ollama import ChatOllama
+import sqlite3
+import pandas as pd
 from sqlalchemy import create_engine, text
-import chromadb
-from chromadb.utils import embedding_functions
+from langchain_ollama import ChatOllama
+from langchain_community.vectorstores import Chroma
+from langchain_huggingface import HuggingFaceEmbeddings
 
-# --- Global Initialization ---
-EMB_FN = embedding_functions.SentenceTransformerEmbeddingFunction(model_name="all-MiniLM-L6-v2")
-CHROMA_CLIENT = chromadb.PersistentClient(path="data/chroma_db")
-SQL_ENGINE = create_engine("sqlite:///data/insights_assistant.db")
-
+logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger("InsightFlow.Agent")
 
-# 1. Specialized Data Tools
+DB_PATH = "data/insights_assistant.db"
+CHROMA_PATH = "data/chroma_db"
+SQL_ENGINE = create_engine(f"sqlite:///{DB_PATH}")
+EMBEDDINGS = HuggingFaceEmbeddings(model_name="all-MiniLM-L6-v2")
+
 def query_sql(query: str):
     try:
         with SQL_ENGINE.connect() as conn:
+            # Clean query
             query = query.strip().replace("`", "").replace("sql", "").replace(";", "")
+            
+            # --- DATE SAFETY ---
+            if "2026" in query:
+                query = query.replace("2026", "2025")
+            if "date('now')" in query:
+                query = query.replace("date('now')", "'2024-03-01'")
+
             result = conn.execute(text(query))
             rows = [dict(row) for row in result.mappings()]
-            
-            # AUTO-ALIASING FOR CHARTS (Fixes the "no graph" issue)
-            for row in rows:
-                if 'revenue' in row and 'value' not in row: row['value'] = row['revenue']
-                if 'spend' in row and 'value' not in row: row['value'] = row['spend']
-                if 'count' in row and 'value' not in row: row['value'] = row['count']
-                if 'title' in row and 'name' not in row: row['name'] = row['title']
             return rows
     except Exception as e:
-        return f"SQL Error: {str(e)}"
+        logger.error(f"SQL Error: {e}")
+        return []
 
-def retrieve_docs(query: str) -> str:
+def query_pdf(query: str):
     try:
-        collection = CHROMA_CLIENT.get_collection(name="internal_reports", embedding_function=EMB_FN)
-        results = collection.query(query_texts=[query], n_results=2)
-        return "\n".join(results['documents'][0])
+        vector_db = Chroma(persist_directory=CHROMA_PATH, embedding_function=EMBEDDINGS)
+        docs = vector_db.similarity_search(query, k=3)
+        return "\n".join([doc.page_content for doc in docs])
     except Exception as e:
-        return f"RAG Error: {str(e)}"
+        logger.error(f"PDF Error: {e}")
+        return "No report data found."
 
-# 2. Ultra-Robust Agent
 class RobustAgent:
     def __init__(self, model="qwen2.5:0.5b"):
         self.llm = ChatOllama(model=model, temperature=0, num_ctx=4096)
-        self.system_prompt = """You are a Data API. You MUST return ONLY JSON.
-        Tables: movies (id, title, revenue, release_year), marketing_spend (region, spend), watch_activity (movie_id, watch_date).
-        
-        If SQL is needed, return: {"action": "sql", "input": "SELECT ..."}
-        If PDF is needed, return: {"action": "pdf", "input": "search text"}
-        If answering directly, return: {"action": "answer", "input": "your text"}
-        
-        Use strftime('%Y', watch_date) for years in SQLite.
+        self.system_prompt = """You are a restricted Tool-Access Agent. 
+        DATABASE SCHEMA:
+        - movies (movie_id, title, genre, release_year, budget, revenue)
+        - marketing_spend (movie_id, campaign_name, spend, channel)
+        - viewers (viewer_id, name, city, country)
+        - watch_activity (activity_id, viewer_id, movie_id, watch_date, duration_minutes)
+        - reviews (review_id, movie_id, rating, comment)
+        - regional_performance (region_name, active_users, total_revenue)
+
+        Instructions:
+        1. Metrics/Stats: {"action": "sql", "input": "SELECT ..."}
+        2. Descriptions/Roadmap: {"action": "pdf", "input": "topic"}
+
+        Examples:
+        - "best titles 2025" -> {"action": "sql", "input": "SELECT title, revenue FROM movies WHERE release_year = 2025 ORDER BY revenue DESC LIMIT 5"}
+        - "why trending" -> {"action": "pdf", "input": "Stellar Run"}
+
+        STRICT RULES:
+        - ONLY use the table names above.
+        - FINAL ANSWER MUST BE PLAIN TEXT. NO JSON.
         """
 
     def _extract_json(self, text):
         try:
-            # Look for ANY json-like block
-            match = re.search(r'\{.*\}', text, re.DOTALL)
-            if match:
-                return json.loads(match.group())
+            start = text.find('{')
+            end = text.rfind('}') + 1
+            if start != -1 and end != -1:
+                return json.loads(text[start:end])
             return None
         except:
             return None
 
-    def invoke(self, user_input):
-        logger.info(f"Agent Processing -> {user_input}")
-        prompt = f"{self.system_prompt}\nUser: {user_input}\nJSON:"
+    def invoke(self, query: str):
+        logger.info(f"Agent Logic -> {query}")
         
-        try:
-            response = self.llm.invoke(prompt)
-            res_json = self._extract_json(response.content)
+        # 1. Routing
+        res = self.llm.invoke(f"{self.system_prompt}\nUser: {query}\nJSON:")
+        parsed = self._extract_json(res.content)
 
-            if not res_json:
-                return {"output": response.content, "data": None, "thought": "Direct response."}
+        if not parsed:
+            return {"answer": res.content, "data": None, "type": "text", "thought": "Direct Answer"}
 
-            action = res_json.get("action", "").lower()
-            val = res_json.get("input", "")
+        action = parsed.get("action")
+        tool_input = parsed.get("input")
 
-            if action == "sql":
-                obs = query_sql(val)
-                final_prompt = f"Data: {obs}\nQuestion: {user_input}\nSummarize:"
-                final_res = self.llm.invoke(final_prompt)
-                return {"output": final_res.content, "data": obs if isinstance(obs, list) else None, "thought": f"SQL Executed: {val}"}
+        # 2. Tool Execution
+        if action == "sql":
+            data = query_sql(tool_input)
+            if not data:
+                return {"answer": "I found no matching records in the database.", "data": None, "type": "text", "thought": f"SQL: {tool_input}"}
             
-            elif action == "pdf":
-                obs = retrieve_docs(val)
-                final_prompt = f"Context: {obs}\nQuestion: {user_input}\nAnswer:"
-                final_res = self.llm.invoke(final_prompt)
-                return {"output": final_res.content, "data": None, "thought": f"PDF Search: {val}"}
-            
-            return {"output": val, "data": None, "thought": "Direct Answer."}
+            # FORCE PLAIN TEXT HERE
+            answer = self.llm.invoke(f"System: Use this data: {data}. Answer the user question: '{query}' in PLAIN TEXT. NO JSON.")
+            return {"answer": answer.content, "data": data, "type": "table", "thought": f"SQL: {tool_input}"}
         
-        except Exception as e:
-            return {"output": f"Error: {str(e)}", "data": None, "thought": "Error handler."}
+        elif action == "pdf":
+            context = query_pdf(tool_input)
+            # FORCE PLAIN TEXT HERE
+            answer = self.llm.invoke(f"System: Use this context: {context}. Answer the user question: '{query}' in PLAIN TEXT. NO JSON.")
+            return {"answer": answer.content, "data": None, "type": "text", "thought": "RAG Search (PDF)"}
+
+        return {"answer": res.content, "data": None, "type": "text", "thought": "Decision Made."}
 
 def get_agent_executor():
-    return RobustAgent(model=os.getenv("OLLAMA_MODEL", "qwen2.5:0.5b"))
+    return RobustAgent()

@@ -1,0 +1,28 @@
+# Git
+.git
+.gitignore
+
+# Frontend
+**/node_modules
+**/dist
+**/build
+.eslintcache
+
+# Backend
+**/__pycache__
+**/*.pyc
+**/*.pyo
+**/*.pyd
+.pytest_cache
+.env
+venv
+.venv
+
+# Data (Docker uses volumes, so we don't need to copy binary DBs during build)
+data/chroma_db
+data/*.db
+data/*.sqlite3
+
+# OS
+.DS_Store
+Thumbs.db

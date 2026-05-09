@@ -23,42 +23,39 @@ def ingest_csvs():
             df.to_sql(table_name, engine, if_exists='replace', index=False)
             print(f"Loaded {file} into table {table_name}")
 
-# 2. Load PDFs into ChromaDB
+# 2. Load Docs into ChromaDB
 def ingest_pdfs():
-    print("Ingesting PDFs into ChromaDB...")
+    print("Ingesting Documents into ChromaDB...")
     client = chromadb.PersistentClient(path=CHROMA_PATH)
-    # Using a local embedding function
     emb_fn = embedding_functions.SentenceTransformerEmbeddingFunction(model_name="all-MiniLM-L6-v2")
     collection = client.get_or_create_collection(name="internal_reports", embedding_function=emb_fn)
-
     text_splitter = RecursiveCharacterTextSplitter(chunk_size=1000, chunk_overlap=100)
 
     for file in os.listdir(PDF_DIR):
+        filepath = os.path.join(PDF_DIR, file)
+        text = ""
         if file.endswith(".pdf"):
-            print(f"Processing {file}...")
-            reader = PdfReader(os.path.join(PDF_DIR, file))
-            text = ""
-            for page in reader.pages:
-                text += page.extract_text()
-            
+            try:
+                reader = PdfReader(filepath)
+                for page in reader.pages:
+                    text += page.extract_text()
+            except Exception as e:
+                print(f"Error reading PDF {file}: {e}")
+                continue
+        elif file.endswith(".txt"):
+            with open(filepath, "r") as f:
+                text = f.read()
+        else:
+            continue
+        
+        if text.strip():
             chunks = text_splitter.split_text(text)
             ids = [f"{file}_{i}" for i in range(len(chunks))]
             metadatas = [{"source": file} for _ in range(len(chunks))]
-            
-            collection.add(
-                documents=chunks,
-                metadatas=metadatas,
-                ids=ids
-            )
+            collection.add(documents=chunks, metadatas=metadatas, ids=ids)
             print(f"Indexed {len(chunks)} chunks from {file}")
 
 if __name__ == "__main__":
     ingest_csvs()
-    # Install pypdf and sentence-transformers if needed
-    try:
-        import pypdf
-        import sentence_transformers
-        ingest_pdfs()
-    except ImportError:
-        print("Please install pypdf and sentence-transformers: pip install pypdf sentence-transformers")
+    ingest_pdfs()
     print("Ingestion complete.")

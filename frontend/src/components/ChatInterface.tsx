@@ -26,13 +26,14 @@ export const ChatInterface: React.FC = () => {
     scrollRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages, isLoading]);
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!input.trim() || isLoading) return;
+  const handleSubmit = async (e?: React.FormEvent, customQuery?: string) => {
+    if (e) e.preventDefault();
+    const queryToUse = customQuery || input;
+    if (!queryToUse.trim() || isLoading) return;
 
     if (view === 'overview') setView('chat');
 
-    const userMsg: Message = { id: Date.now().toString(), role: 'user', content: input };
+    const userMsg: Message = { id: Date.now().toString(), role: 'user', content: queryToUse };
     setMessages(prev => [...prev, userMsg]);
     setInput('');
     setIsLoading(true);
@@ -44,7 +45,7 @@ export const ChatInterface: React.FC = () => {
           'Content-Type': 'application/json',
           'X-API-KEY': 'sk-insight-flow-2025'
         },
-        body: JSON.stringify({ query: input }),
+        body: JSON.stringify({ query: queryToUse }),
       });
       const data = await res.json();
       
@@ -68,29 +69,7 @@ export const ChatInterface: React.FC = () => {
   return (
     <div className="flex h-screen bg-background text-foreground overflow-hidden font-sans selection:bg-accent/30 relative">
       
-      {/* BACKGROUND ATMOSPHERE */}
-      <div className="fixed inset-0 pointer-events-none overflow-hidden z-0">
-         <motion.div 
-            animate={{ 
-               x: [0, 100, 0], 
-               y: [0, -50, 0],
-               scale: [1, 1.2, 1]
-            }}
-            transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
-            className="absolute top-[-10%] left-[-10%] w-[50%] h-[50%] bg-accent/10 blur-[120px] rounded-full" 
-         />
-         <motion.div 
-            animate={{ 
-               x: [0, -100, 0], 
-               y: [0, 80, 0],
-               scale: [1.2, 1, 1.2]
-            }}
-            transition={{ duration: 25, repeat: Infinity, ease: "linear" }}
-            className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-violet-500/10 blur-[120px] rounded-full" 
-         />
-      </div>
-
-      {/* 1. LEFT NAVIGATION (COMPRESSED) */}
+      {/* 1. LEFT NAVIGATION */}
       <aside className="w-20 lg:w-64 border-r border-white/5 flex flex-col bg-surface/80 backdrop-blur-3xl shrink-0 z-20">
         <div className="p-6 flex items-center gap-3">
           <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-accent to-accent-hover flex items-center justify-center shadow-lg shadow-accent/20">
@@ -113,10 +92,10 @@ export const ChatInterface: React.FC = () => {
 
         <div className="p-4 border-t border-white/5">
           <div className="p-3 rounded-2xl bg-white/5 flex items-center gap-3 group cursor-pointer hover:bg-white/10 transition-colors">
-             <div className="w-8 h-8 rounded-lg bg-accent/20 flex items-center justify-center text-accent text-xs font-bold">JD</div>
+             <div className="w-8 h-8 rounded-lg bg-accent/20 flex items-center justify-center text-accent text-xs font-bold">SJ</div>
              <div className="hidden lg:block flex-1 overflow-hidden">
-                <p className="text-xs font-bold truncate">John Doe</p>
-                <p className="text-[10px] text-white/30 truncate">Senior Quant Engineer</p>
+                <p className="text-xs font-bold truncate">Shubham Savarn</p>
+                <p className="text-[10px] text-white/30 truncate">Senior BI Engineer</p>
              </div>
              <LogOut size={14} className="text-white/20 hidden lg:block" />
           </div>
@@ -127,7 +106,7 @@ export const ChatInterface: React.FC = () => {
       <main className="flex-1 flex flex-col relative overflow-hidden z-10">
         
         {/* Header Bar */}
-        <header className="h-16 border-b border-white/5 flex items-center justify-between px-8 bg-surface/30 backdrop-blur-md">
+        <header className="h-16 border-b border-white/5 flex items-center justify-between px-8 bg-surface/30 backdrop-blur-md shrink-0">
           <div className="flex items-center gap-4">
              <div className="flex items-center gap-1 text-[10px] text-white/20 font-bold uppercase tracking-widest">
                 Nodes <ChevronRight size={10} /> {view === 'overview' ? 'Dashboard' : 'AI Inquiry'}
@@ -136,10 +115,6 @@ export const ChatInterface: React.FC = () => {
           <div className="flex items-center gap-6">
             <div className="flex items-center gap-2 text-[10px] bg-emerald-500/10 text-emerald-400 px-3 py-1 rounded-full font-bold border border-emerald-500/20 shadow-lg shadow-emerald-500/5">
                <Zap size={12} fill="currentColor" /> LOCAL OLLAMA: QWEN2.5 ACTIVE
-            </div>
-            <div className="flex items-center gap-2">
-               <button className="p-2 rounded-lg bg-white/5 text-white/40 hover:text-white transition-colors"><Search size={18} /></button>
-               <button className="p-2 rounded-lg bg-white/5 text-white/40 hover:text-white transition-colors"><Settings size={18} /></button>
             </div>
           </div>
         </header>
@@ -152,153 +127,163 @@ export const ChatInterface: React.FC = () => {
                  {view === 'overview' ? (
                     <motion.div key="overview" initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: 20 }} className="max-w-6xl mx-auto space-y-10">
                        <header>
-                          <h2 className="text-4xl font-bold tracking-tighter">Welcome back, John.</h2>
+                          <h2 className="text-4xl font-bold tracking-tighter text-white">Welcome back.</h2>
                           <p className="text-white/40 mt-2 text-xl font-light">Here is what the Intelligence Layer synthesized today.</p>
                        </header>
-                       
                        <StatsGrid />
-
-                       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                          <SourceExplorer />
-                          <div className="glass-card rounded-3xl p-8 flex flex-col items-center justify-center text-center group border-dashed border-2 border-white/5">
-                             <div className="w-20 h-20 rounded-full bg-accent/10 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform shadow-2xl shadow-accent/10">
-                                <Sparkles size={40} className="text-accent" />
-                             </div>
-                             <h3 className="text-2xl font-bold mb-3 tracking-tight">Run Deep Query</h3>
-                             <p className="text-white/40 max-w-sm mb-8 text-sm font-medium">Cross-reference SQL metrics with qualitative behavior reports in real-time.</p>
-                             <button onClick={() => setView('chat')} className="px-10 py-4 rounded-2xl bg-accent text-white font-bold shadow-2xl shadow-accent/40 hover:bg-accent-hover transition-all active:scale-95 flex items-center gap-3">
-                                Start Session <ChevronRight size={18} />
-                             </button>
-                          </div>
-                       </div>
+                       <SourceExplorer />
                     </motion.div>
                  ) : (
-                    <motion.div key="chat" initial={{ opacity: 0, scale: 0.98 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0, scale: 1.02 }} className="h-full flex flex-col max-w-5xl mx-auto">
-                       {/* Chat Messages */}
-                       <div className="flex-1 space-y-10 pb-40 pt-4">
-                          {messages.length === 0 && (
-                             <div className="h-full flex flex-col items-center justify-center text-center space-y-8 animate-in fade-in duration-1000">
-                                <div className="w-24 h-24 rounded-[40px] bg-white/5 flex items-center justify-center border border-white/10 shadow-inner">
-                                   <Cpu size={48} className="text-white/10" />
-                                </div>
-                                <div className="space-y-3">
-                                   <h2 className="text-2xl font-bold tracking-tight text-white/80">Autonomous Analytics Node</h2>
-                                   <p className="text-sm text-white/30 max-w-sm leading-relaxed">Ask anything about revenue, movies, or audience trends. I will query SQL and PDF indexes for you.</p>
-                                </div>
-                                <div className="flex flex-wrap justify-center gap-3">
-                                   {["Top 5 revenue movies?", "Summarize behavior reports", "Stellar Run trends"].map(q => (
-                                      <button key={q} onClick={() => setInput(q)} className="px-4 py-2 rounded-full bg-white/5 border border-white/5 text-xs text-white/50 hover:bg-accent/10 hover:text-accent transition-all">
-                                         {q}
-                                      </button>
-                                   ))}
-                                </div>
+                    <motion.div key="chat" initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }} className="max-w-4xl mx-auto space-y-12 pb-32">
+                       {messages.length === 0 ? (
+                          <div className="h-full flex flex-col items-center justify-center text-center space-y-8 animate-in fade-in duration-1000">
+                             <div className="w-24 h-24 rounded-[40px] bg-white/5 flex items-center justify-center border border-white/10 shadow-inner">
+                                <Cpu size={48} className="text-white/10" />
                              </div>
-                          )}
-                          {messages.map((m) => (
-                             <div key={m.id} className={clsx("flex gap-8", m.role === 'user' ? "flex-row-reverse" : "")}>
-                                <div className={clsx(
-                                   "w-12 h-12 rounded-2xl flex items-center justify-center shrink-0 border transition-all duration-700",
-                                   m.role === 'user' ? "bg-accent border-white/20 text-white shadow-2xl shadow-accent/40 rotate-12" : "bg-surface border-white/10 text-accent -rotate-12"
-                                )}>
-                                   {m.role === 'user' ? <User size={24} /> : <Bot size={24} />}
-                                </div>
-                                <div className="space-y-6 max-w-[85%]">
-                                   {m.thought && (
-                                      <details className="text-[11px] text-white/30 bg-white/[0.02] p-5 rounded-3xl border border-white/5 group hover:border-accent/20">
-                                         <summary className="cursor-pointer hover:text-accent font-bold uppercase tracking-widest flex items-center gap-2">
-                                            <Activity size={14} /> Agent Logic Flow
-                                         </summary>
-                                         <pre className="mt-5 whitespace-pre-wrap font-mono leading-relaxed text-white/40 bg-black/40 p-6 rounded-2xl border border-white/5 shadow-inner">{m.thought}</pre>
-                                      </details>
-                                   )}
-                                   <div className={clsx(
-                                      "p-7 rounded-[32px] leading-relaxed text-[17px] shadow-sm",
-                                      m.role === 'user' ? "bg-accent text-white border border-white/10 shadow-2xl" : "bg-card/50 backdrop-blur-xl border border-white/5 text-white/90"
-                                   )}>
-                                      {m.content}
-                                   </div>
-                                   {m.data && (
-                                      <div className="space-y-6 pt-4">
-                                         <InsightsDashboard data={m.data} title="Metric Visualization" />
-                                         <DataTable data={m.data} />
-                                      </div>
-                                   )}
-                                </div>
+                             <div className="space-y-3">
+                                <h2 className="text-2xl font-bold tracking-tight text-white/80">Autonomous Analytics Node</h2>
+                                <p className="text-sm text-white/30 max-w-sm leading-relaxed">Ask about revenue, movies, or audience trends. I will query SQL and PDF indexes for you.</p>
                              </div>
-                          ))}
-                          {isLoading && (
-                             <div className="flex gap-8 items-center">
-                                <div className="w-12 h-12 rounded-2xl bg-accent/20 border border-accent/20 flex items-center justify-center text-accent animate-spin-slow">
-                                   <Sparkles size={24} />
-                                </div>
-                                <div className="text-white/20 font-bold uppercase tracking-widest text-xs animate-pulse">Processing Cross-Reference Query...</div>
+                          </div>
+                       ) : (
+                         messages.map((m) => (
+                            <div key={m.id} className={clsx("flex gap-8", m.role === 'user' ? "flex-row-reverse" : "")}>
+                               <div className={clsx(
+                                  "w-10 h-10 rounded-2xl flex items-center justify-center shrink-0 border transition-all duration-700",
+                                  m.role === 'user' ? "bg-accent border-white/20 text-white shadow-2xl" : "bg-surface border-white/10 text-accent"
+                               )}>
+                                  {m.role === 'user' ? <User size={20} /> : <Bot size={20} />}
+                               </div>
+                               <div className="space-y-6 max-w-[85%]">
+                                  {m.thought && (
+                                     <details className="text-[11px] text-white/30 bg-white/[0.02] p-5 rounded-3xl border border-white/5 group hover:border-accent/20">
+                                        <summary className="cursor-pointer hover:text-accent font-bold uppercase tracking-widest flex items-center gap-2">
+                                           <Activity size={14} /> Agent Logic Flow
+                                        </summary>
+                                        <pre className="mt-5 whitespace-pre-wrap font-mono leading-relaxed text-white/40 bg-black/40 p-6 rounded-2xl border border-white/5 shadow-inner">{m.thought}</pre>
+                                     </details>
+                                  )}
+                                  <div className={clsx(
+                                     "p-6 rounded-[28px] leading-relaxed text-[16px]",
+                                     m.role === 'user' ? "bg-accent text-white border border-white/10" : "bg-card border border-white/5 text-white/90"
+                                  )}>
+                                     {m.content}
+                                  </div>
+                                  {m.data && (
+                                     <div className="space-y-6 pt-4">
+                                        <InsightsDashboard data={m.data} title="Metric Visualization" />
+                                        <DataTable data={m.data} />
+                                     </div>
+                                  )}
+                               </div>
+                            </div>
+                         ))
+                       )}
+                       {isLoading && (
+                          <div className="flex gap-8 items-center">
+                             <div className="w-10 h-10 rounded-2xl bg-accent/20 border border-accent/20 flex items-center justify-center text-accent animate-pulse">
+                                <Sparkles size={20} />
                              </div>
-                          )}
-                          <div ref={scrollRef} />
-                       </div>
-
-                       {/* Input Container */}
-                       <div className="fixed bottom-10 left-20 lg:left-64 right-0 lg:right-80 flex justify-center px-12 z-20">
-                          <form onSubmit={handleSubmit} className="w-full max-w-4xl relative group">
-                             <div className="absolute -inset-1 bg-gradient-to-r from-accent to-violet-500 rounded-[30px] blur opacity-10 group-focus-within:opacity-40 transition-all duration-700" />
-                             <div className="relative bg-card/80 backdrop-blur-3xl border border-white/10 rounded-[28px] overflow-hidden flex items-center">
-                                <div className="pl-6 text-white/20"><Command size={24} /></div>
-                                <input
-                                   type="text"
-                                   value={input}
-                                   onChange={(e) => setInput(e.target.value)}
-                                   placeholder="Initiate cross-data analysis..."
-                                   className="flex-1 bg-transparent py-6 px-4 focus:outline-none text-lg placeholder:text-white/20"
-                                />
-                                <button
-                                   type="submit"
-                                   disabled={isLoading || !input.trim()}
-                                   className="mr-4 p-4 rounded-2xl bg-accent text-white disabled:opacity-20 hover:scale-105 transition-all shadow-xl shadow-accent/40 active:scale-95"
-                                >
-                                   <Send size={24} />
-                                </button>
-                             </div>
-                          </form>
-                       </div>
+                             <div className="text-white/20 font-bold uppercase tracking-widest text-[10px]">Synthesizing...</div>
+                          </div>
+                       )}
+                       <div ref={scrollRef} />
                     </motion.div>
                  )}
               </AnimatePresence>
            </div>
 
-           {/* 3. RIGHT ANALYTICS SIDEBAR (CONTEXT AWARE) */}
+           {/* 3. RIGHT SIDEBAR: INTELLIGENCE PANEL (Selectors & Filters) */}
            {view === 'chat' && (
-              <aside className="w-80 border-l border-white/5 bg-surface/50 backdrop-blur-3xl p-6 space-y-8 hidden xl:block">
-                 <div className="space-y-4">
-                    <h4 className="text-[11px] font-bold uppercase tracking-widest text-white/30 flex items-center gap-2"><TrendingUp size={14} /> Active Context</h4>
-                    <div className="p-4 rounded-2xl bg-white/5 border border-white/5">
-                       <p className="text-xs text-white/50 leading-relaxed font-medium">Currently analyzing <span className="text-accent">Marketing Spend vs Viewer Retention</span> across Q1-Q2.</p>
-                    </div>
-                 </div>
+             <aside className="w-80 border-l border-white/5 bg-surface/20 backdrop-blur-3xl hidden xl:flex flex-col p-6 space-y-8 overflow-y-auto custom-scrollbar shrink-0">
+                <div className="space-y-6">
+                   <div className="flex items-center gap-2 text-white/40">
+                      <LayoutDashboard size={14} />
+                      <span className="text-[10px] font-bold uppercase tracking-widest">BI Selectors</span>
+                   </div>
+                   
+                   {/* MARKET SELECTORS */}
+                   <div className="space-y-3">
+                      <p className="text-[10px] text-white/20 uppercase font-bold tracking-tighter">Genre Focus</p>
+                      <div className="flex flex-wrap gap-2">
+                         {['Action', 'Sci-Fi', 'Comedy', 'Drama'].map(genre => (
+                           <button 
+                            key={genre}
+                            onClick={() => handleSubmit(undefined, `How did ${genre} perform this year?`)}
+                            className="px-3 py-1.5 rounded-lg bg-white/5 border border-white/5 text-[10px] font-medium text-white/40 hover:bg-accent/10 hover:text-accent transition-all"
+                           >
+                             {genre}
+                           </button>
+                         ))}
+                      </div>
+                   </div>
 
-                 <div className="space-y-4">
-                    <h4 className="text-[11px] font-bold uppercase tracking-widest text-white/30 flex items-center gap-2"><Sparkles size={14} /> Suggested Dives</h4>
-                    <div className="space-y-2">
-                       {["Regional ROI Analysis", "Churn Risk Projection", "Content Decay Curve"].map(s => (
-                          <button key={s} className="w-full text-left p-3 rounded-xl hover:bg-white/5 text-xs text-white/40 border border-transparent hover:border-white/5 transition-all flex items-center justify-between group">
-                             {s} <ChevronRight size={14} className="opacity-0 group-hover:opacity-100 transition-opacity" />
-                          </button>
-                       ))}
-                    </div>
-                 </div>
+                   {/* TIMEFRAME SELECTORS */}
+                   <div className="space-y-3 pt-4">
+                      <p className="text-[10px] text-white/20 uppercase font-bold tracking-tighter">Timeline</p>
+                      <div className="grid grid-cols-2 gap-2">
+                         {['2024 Analysis', '2025 Forecast'].map(year => (
+                           <button 
+                            key={year}
+                            onClick={() => handleSubmit(undefined, `Best titles in ${year.split(' ')[0]}?`)}
+                            className="p-2 rounded-lg bg-white/5 border border-white/5 text-[10px] font-medium text-white/40 hover:bg-accent/10 hover:text-accent transition-all text-center"
+                           >
+                             {year}
+                           </button>
+                         ))}
+                      </div>
+                   </div>
+                </div>
 
-                 <div className="pt-8 mt-auto">
-                    <div className="p-5 rounded-3xl bg-gradient-to-br from-accent/20 to-violet-500/20 border border-accent/20 text-center relative overflow-hidden group">
-                       <div className="relative z-10">
-                          <h5 className="text-sm font-bold mb-1">Export Executive PDF</h5>
-                          <p className="text-[10px] text-white/40 mb-4 font-medium uppercase tracking-tighter">Download session findings</p>
-                          <button className="w-full py-2 bg-white text-black text-[11px] font-bold rounded-xl hover:bg-accent hover:text-white transition-all uppercase tracking-widest">Generate Report</button>
-                       </div>
-                       <FileText size={80} className="absolute -right-4 -bottom-4 text-white/5 rotate-12 group-hover:scale-110 transition-transform" />
-                    </div>
-                 </div>
-              </aside>
+                <div className="h-px bg-white/5" />
+
+                {/* ACTIVE DASHBOARD (Insights Panel) */}
+                <div className="space-y-4 flex-1">
+                   <div className="flex items-center gap-2 text-white/40">
+                      <TrendingUp size={14} />
+                      <span className="text-[10px] font-bold uppercase tracking-widest">Active Synthesis</span>
+                   </div>
+                   
+                   {activeData ? (
+                     <div className="scale-90 origin-top -mt-4">
+                        <InsightsDashboard data={activeData} title="Current Focus" />
+                     </div>
+                   ) : (
+                     <div className="flex flex-col items-center justify-center h-40 text-center space-y-3 opacity-20">
+                        <Sparkles size={24} />
+                        <p className="text-[10px] font-medium italic">Ask a data query...</p>
+                     </div>
+                   )}
+                </div>
+             </aside>
            )}
         </div>
+
+        {/* Floating Input Area (Positioned relative to the workspace) */}
+        {view === 'chat' && (
+           <div className="fixed bottom-10 left-20 lg:left-64 right-0 lg:right-80 flex justify-center px-12 z-20">
+              <form onSubmit={handleSubmit} className="w-full max-w-4xl relative group">
+                 <div className="absolute -inset-1 bg-gradient-to-r from-accent to-violet-500 rounded-[30px] blur opacity-10 group-focus-within:opacity-40 transition-all duration-700" />
+                 <div className="relative bg-card/80 backdrop-blur-3xl border border-white/10 rounded-[28px] overflow-hidden flex items-center shadow-2xl">
+                    <div className="pl-6 text-white/20"><Command size={24} /></div>
+                    <input
+                       type="text"
+                       value={input}
+                       onChange={(e) => setInput(e.target.value)}
+                       placeholder="Initiate cross-data analysis..."
+                       className="flex-1 bg-transparent border-none py-6 px-4 text-white placeholder:text-white/20 focus:outline-none text-sm font-medium"
+                    />
+                    <button 
+                       type="submit"
+                       disabled={isLoading}
+                       className="mr-3 w-12 h-12 rounded-2xl bg-accent hover:bg-accent-hover flex items-center justify-center text-white shadow-lg shadow-accent/20 transition-all active:scale-95 disabled:opacity-50"
+                    >
+                       {isLoading ? <Loader2 className="animate-spin" size={20} /> : <Send size={20} />}
+                    </button>
+                 </div>
+              </form>
+           </div>
+        )}
       </main>
     </div>
   );
