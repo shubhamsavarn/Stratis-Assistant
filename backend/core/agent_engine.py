@@ -1,6 +1,7 @@
 import os
 import json
 import re
+import logging
 from langchain_ollama import ChatOllama
 from sqlalchemy import create_engine, text
 import chromadb
@@ -10,6 +11,8 @@ from chromadb.utils import embedding_functions
 EMB_FN = embedding_functions.SentenceTransformerEmbeddingFunction(model_name="all-MiniLM-L6-v2")
 CHROMA_CLIENT = chromadb.PersistentClient(path="data/chroma_db")
 SQL_ENGINE = create_engine("sqlite:///data/insights_assistant.db")
+
+logger = logging.getLogger("InsightFlow.Agent")
 
 # 1. Specialized Data Tools
 def query_sql(query: str):
@@ -62,7 +65,7 @@ class RobustAgent:
             return None
 
     def invoke(self, user_input):
-        print(f"DEBUG: Processing -> {user_input}")
+        logger.info(f"Agent Processing -> {user_input}")
         prompt = f"{self.system_prompt}\nUser: {user_input}\nJSON:"
         
         try:

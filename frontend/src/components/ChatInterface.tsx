@@ -40,7 +40,10 @@ export const ChatInterface: React.FC = () => {
     try {
       const res = await fetch('http://localhost:8000/chat', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 
+          'Content-Type': 'application/json',
+          'X-API-KEY': 'sk-insight-flow-2025'
+        },
         body: JSON.stringify({ query: input }),
       });
       const data = await res.json();

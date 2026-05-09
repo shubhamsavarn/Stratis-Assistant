@@ -1,13 +1,9 @@
 fastapi
 uvicorn
-langchain
-langchain-community
-chromadb
+pydantic
 sqlalchemy
 pandas
-fpdf2
-python-dotenv
-pydantic
-pytest
-httpx
+chromadb
+langchain-ollama
+pypdf
 sentence-transformers

@@ -19,7 +19,7 @@ def run_tests():
         print(f"Testing Query: {q}")
         try:
             start = time.time()
-            res = requests.post(BASE_URL, json={"query": q}, timeout=120)
+            res = requests.post(BASE_URL, json={"query": q}, headers={"X-API-KEY": "sk-insight-flow-2025"}, timeout=120)
             elapsed = time.time() - start
             if res.status_code == 200:
                 data = res.json()
