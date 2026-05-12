@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Send, Bot, User, Loader2, Sparkles, History, ShieldCheck, TrendingUp, Info, LayoutDashboard, Database, FileText, Settings, LogOut, Search, Command, ChevronRight, Activity, Zap, Cpu } from 'lucide-react';
+import { Send, Bot, User, Loader2, Sparkles, History, ShieldCheck, TrendingUp, Info, LayoutDashboard, Database, FileText, Settings, LogOut, Search, Command, ChevronRight, Activity, Zap, Cpu, Plus, Trash2, MessageSquare, X } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { InsightsDashboard } from './InsightsDashboard';
 import { StatsGrid } from './StatsGrid';
@@ -14,27 +14,103 @@ interface Message {
    data?: any[];
 }
 
+interface ChatSession {
+   id: string;
+   title: string;
+   messages: Message[];
+   activeData: any[] | null;
+   timestamp: number;
+}
+
 export const ChatInterface: React.FC = () => {
-   const [messages, setMessages] = useState<Message[]>([]);
+   const [sessions, setSessions] = useState<ChatSession[]>([]);
+   const [activeSessionId, setActiveSessionId] = useState<string | null>(null);
    const [input, setInput] = useState('');
    const [isLoading, setIsLoading] = useState(false);
-   const [activeData, setActiveData] = useState<any[] | null>(null);
    const [view, setView] = useState<'overview' | 'chat'>('overview');
    const scrollRef = useRef<HTMLDivElement>(null);
+
+   const activeSession = sessions.find(s => s.id === activeSessionId);
+   const messages = activeSession?.messages || [];
+   const activeData = activeSession?.activeData || null;
+
+   // 1. Initial Load from LocalStorage
+   useEffect(() => {
+      const saved = localStorage.getItem('insight_flow_sessions');
+      if (saved) {
+         try {
+            const parsed = JSON.parse(saved);
+            if (parsed.length > 0) {
+               setSessions(parsed);
+               setActiveSessionId(parsed[0].id);
+            } else {
+               createNewChat();
+            }
+         } catch (e) {
+            console.error("Failed to parse sessions", e);
+            createNewChat();
+         }
+      } else {
+         createNewChat();
+      }
+   }, []);
+
+   // 2. Save to LocalStorage
+   useEffect(() => {
+      if (sessions.length > 0) {
+         localStorage.setItem('insight_flow_sessions', JSON.stringify(sessions));
+      }
+   }, [sessions]);
 
    useEffect(() => {
       scrollRef.current?.scrollIntoView({ behavior: 'smooth' });
    }, [messages, isLoading]);
 
+   const createNewChat = () => {
+      const newSession: ChatSession = {
+         id: Date.now().toString(),
+         title: 'New Chat Analysis',
+         messages: [],
+         activeData: null,
+         timestamp: Date.now()
+      };
+      setSessions(prev => [newSession, ...prev]);
+      setActiveSessionId(newSession.id);
+      setView('chat');
+   };
+
+   const deleteSession = (e: React.MouseEvent, id: string) => {
+      e.stopPropagation();
+      const filtered = sessions.filter(s => s.id !== id);
+      setSessions(filtered);
+      if (activeSessionId === id) {
+         setActiveSessionId(filtered[0]?.id || null);
+         if (filtered.length === 0) createNewChat();
+      }
+   };
+
    const handleSubmit = async (e?: React.FormEvent, customQuery?: string) => {
       if (e) e.preventDefault();
       const queryToUse = customQuery || input;
-      if (!queryToUse.trim() || isLoading) return;
+      if (!queryToUse.trim() || isLoading || !activeSessionId) return;
 
       if (view === 'overview') setView('chat');
 
       const userMsg: Message = { id: Date.now().toString(), role: 'user', content: queryToUse };
-      setMessages(prev => [...prev, userMsg]);
+      
+      // Update session with user message and potentially update title
+      setSessions(prev => prev.map(s => {
+         if (s.id === activeSessionId) {
+            const isFirstMsg = s.messages.length === 0;
+            return {
+               ...s,
+               title: isFirstMsg ? (queryToUse.length > 30 ? queryToUse.substring(0, 30) + '...' : queryToUse) : s.title,
+               messages: [...s.messages, userMsg]
+            };
+         }
+         return s;
+      }));
+
       setInput('');
       setIsLoading(true);
 
@@ -57,8 +133,16 @@ export const ChatInterface: React.FC = () => {
             data: data.data || null
          };
 
-         setMessages(prev => [...prev, assistantMsg]);
-         if (data.data) setActiveData(data.data);
+         setSessions(prev => prev.map(s => {
+            if (s.id === activeSessionId) {
+               return {
+                  ...s,
+                  messages: [...s.messages, assistantMsg],
+                  activeData: data.data || s.activeData
+               };
+            }
+            return s;
+         }));
       } catch (err) {
          console.error(err);
       } finally {
@@ -82,8 +166,48 @@ export const ChatInterface: React.FC = () => {
             </div>
 
             <nav className="flex-1 p-4 space-y-1 overflow-y-auto custom-scrollbar">
+               <button 
+                  onClick={createNewChat}
+                  className="w-full flex items-center gap-3 p-4 mb-4 rounded-2xl bg-accent text-white hover:bg-accent-hover transition-all shadow-lg shadow-accent/20 font-bold text-sm"
+               >
+                  <Plus size={18} /> New Chat
+               </button>
+
                <NavItem icon={LayoutDashboard} label="Dashboard" active={view === 'overview'} onClick={() => setView('overview')} />
                <NavItem icon={Bot} label="AI Inquiry" active={view === 'chat'} onClick={() => setView('chat')} />
+               
+               <div className="mt-8 mb-4 px-4 flex items-center justify-between text-[10px] text-white/20 font-bold uppercase tracking-widest">
+                  <span>Recent Analysis</span>
+                  <History size={12} />
+               </div>
+
+               <div className="space-y-1 max-h-[40vh] overflow-y-auto custom-scrollbar pr-2">
+                  {sessions.map(session => (
+                     <div 
+                        key={session.id}
+                        onClick={() => {
+                           setActiveSessionId(session.id);
+                           setView('chat');
+                        }}
+                        className={clsx(
+                           "group flex items-center gap-3 p-3 rounded-xl cursor-pointer transition-all border",
+                           activeSessionId === session.id 
+                              ? "bg-white/10 border-white/10 text-white" 
+                              : "border-transparent text-white/40 hover:bg-white/5 hover:text-white/60"
+                        )}
+                     >
+                        <MessageSquare size={14} className={activeSessionId === session.id ? "text-accent" : ""} />
+                        <span className="flex-1 text-xs font-medium truncate">{session.title}</span>
+                        <button 
+                           onClick={(e) => deleteSession(e, session.id)}
+                           className="opacity-0 group-hover:opacity-100 p-1 hover:bg-red-500/20 hover:text-red-400 rounded transition-all"
+                        >
+                           <Trash2 size={12} />
+                        </button>
+                     </div>
+                  ))}
+               </div>
+
                <div className="my-6 border-t border-white/5 mx-2" />
                <NavItem icon={Database} label="SQL Engine" />
                <NavItem icon={FileText} label="Vector Store" />
